@@ -4,6 +4,7 @@
     <v-btn
       size="30"
       prepend-icon="mdi-plus"
+      @click="mainStore.addAccount()"
     />
   </div>
 
@@ -14,79 +15,35 @@
     density="compact"
   />
 
-  <div class="form-container">
-    <div class="header-row">
-      <div class="header-cell">Метки</div>
-      <div class="header-cell">Тип записи</div>
-      <div class="header-cell">Логин</div>
-      <div class="header-cell">Пароль</div>
-      <div class="header-cell"></div>
-    </div>
-    <div class="fields-row">
-      <v-text-field
-          class="form-field"
-          label="Метки"
-          density="compact"
-          hide-details
-      />
-      <v-select
-          class="form-field"
-          label="Тип записи"
-          density="compact"
-          hide-details
-          />
-      <v-text-field
-          class="form-field"
-          label="Логин"
-          density="compact"
-          hide-details
-          />
-      <v-text-field
-          class="form-field"
-          label="Пароль"
-          density="compact"
-          hide-details
-          />
-      <v-icon>mdi-delete</v-icon>
-    </div>
-
-  </div>
+    <v-row class="header-row">
+      <v-col cols="3" class="header-cell">Метки</v-col>
+      <v-col cols="2" class="header-cell">Тип записи</v-col>
+      <v-col cols="3" class="header-cell">Логин</v-col>
+      <v-col cols="3" class="header-cell">Пароль</v-col>
+      <v-col cols="1" class="header-cell" />
+    </v-row>
+    <v-row v-for="(item, index) in mainStore.data" :key="index" class="d-flex align-center">
+      <AccountTemplate :item="item"/>
+    </v-row>
 
 </template>
 
 <script setup lang="ts">
+import AccountTemplate from "@/components/AccountTemplate.vue";
+import {useMainStore} from "@/store/mainStore.ts";
 
 
+const mainStore = useMainStore();
 </script>
 
 <style scoped lang="sass">
-.form-container
-  display: grid
-  grid-template-columns: minmax(100px, 1fr) minmax(100px, 1fr) minmax(120px, 1.5fr) minmax(120px, 1.5fr) 24px
-  gap: 12px
-  align-items: center
-
-  .header-row
-    display: contents
-
-    .header-cell
-      padding: 0 8px
-      font-weight: 500
-      font-size: 0.8125rem
-      color: rgba(0, 0, 0, 0.6)
-
-  .fields-row
-    display: contents
-
-    .form-field
-      width: 100%
-
-    .combined-field
-      grid-column: 3 / span 2
-
-    .action-cell
-      grid-column: 5
-      display: flex
-      justify-content: center
+.header
+  &-row
+    padding-top: 18px
+  &-cell
+    padding: 0 18px
+    font-weight: 500
+    font-size: 0.8125rem
+    color: rgba(0, 0, 0, 0.6)
 </style>
 

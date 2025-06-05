@@ -1,7 +1,9 @@
 <template>
-  <div class="pa-5">
-    <ManagementPage />
-  </div>
+  <v-app>
+    <v-main class="pa-8">
+      <ManagementPage />
+    </v-main>
+  </v-app>
 </template>
 
 <script setup lang="ts">
