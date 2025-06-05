@@ -4,10 +4,10 @@
         label="Метки"
         density="compact"
         hide-details
-        :model-value="localItem.tag"
+        :model-value="localItem.labels"
         :error="item.errors.tag"
         maxlength="50"
-        @input="localItem.tag = $event.target.value"
+        @input="localItem.labels = $event.target.value"
         @blur="updateLabels()"
       />
     </v-col>
@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {useMainStore} from "@/store/mainStore.ts";
 
 const mainStore = useMainStore();
@@ -71,9 +71,16 @@ const props = defineProps({
 
 const localItem = ref(props.item)
 
+watch(() => props.item, (newItem) => {
+  localItem.value = {
+    ...newItem,
+    labels: newItem.labels?.map((item: { text: string }) => item.text).join('; ')
+  };
+}, { immediate: true });
+
 // Обновление меток
 const updateLabels = () => {
-  const labels = mainStore.parseLabels(localItem.value.tag || '')
+  const labels = mainStore.parseLabels(localItem.value.labels || '')
   console.log(labels)
   mainStore.updateAccount(props.item.id, { labels })
 }

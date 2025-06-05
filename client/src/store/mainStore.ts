@@ -2,14 +2,12 @@ import {defineStore} from 'pinia'
 import {v4} from "uuid";
 
 interface Errors {
-  tag: boolean,
   type: boolean,
   login: boolean,
   password: boolean,
 }
 interface Account {
   id: string | null,
-  tag: string | null,
   labels: { text: string | null }[],
   type: string | null,
   login: string | null,
@@ -34,13 +32,11 @@ export const useMainStore = defineStore('main', {
     addAccount() {
       this.data.push({
         id: v4(),
-        tag: null,
         labels: [],
         type: null,
         login: null,
         password: null,
         errors: {
-          tag: false,
           type: false,
           login: false,
           password: false,
@@ -85,7 +81,6 @@ export const useMainStore = defineStore('main', {
     // Валидация учетной записи
     validateAccount(account: Account): Errors {
       return {
-        tag: false,
         type: !account.type?.trim(),
         login: !account.login?.trim(),
         password: account.type !== 'LDAP' && !account.password?.trim()
