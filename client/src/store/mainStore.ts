@@ -1,22 +1,6 @@
 import {defineStore} from 'pinia'
 import {v4} from "uuid";
-
-interface Errors {
-  type: boolean,
-  login: boolean,
-  password: boolean,
-}
-interface Account {
-  id: string | null,
-  labels: { text: string | null }[],
-  type: string | null,
-  login: string | null,
-  password: string | null,
-  errors: Errors,
-}
-interface AccountState {
-  data: Account[]
-}
+import type {Account, AccountState, Errors} from "@/store/interfaces/main.interfaces.ts";
 
 export const useMainStore = defineStore('main', {
   state: (): AccountState => ({
@@ -25,11 +9,11 @@ export const useMainStore = defineStore('main', {
 
   actions: {
     // Сохранение данных в localStorage
-    saveToLocalStorage() {
+    saveToLocalStorage(): void {
       localStorage.setItem('accountsData', JSON.stringify(this.data));
     },
 
-    addAccount() {
+    addAccount(): void {
       this.data.push({
         id: v4(),
         labels: [],
@@ -45,13 +29,13 @@ export const useMainStore = defineStore('main', {
     },
 
     // Удаление учетной записи
-    removeAccount(id: string) {
+    removeAccount(id: string): void {
       this.data = this.data.filter((account) => account.id !== id);
       this.saveToLocalStorage();
     },
 
     // Обновление учетной записи
-    updateAccount(id: string, updatedData: Partial<Account>) {
+    updateAccount(id: string, updatedData: Partial<Account>): void {
       const accountIndex = this.data.findIndex(account => account.id === id)
       if (accountIndex !== -1) {
         const updatedAccount = {
@@ -61,21 +45,13 @@ export const useMainStore = defineStore('main', {
         this.data[accountIndex] = updatedAccount
 
         const errors = this.validateAccount(updatedAccount)
+        this.data[accountIndex].errors = errors
 
-        console.log(errors)
         // Сохраняем только если валидация пройдена
         if (!Object.values(errors).some(error => error)) {
-          this.data[accountIndex] = {
-            ...updatedAccount,
-            errors: errors
-          };
           this.saveToLocalStorage();
-          return true;
         }
-
-        this.data[accountIndex].errors = errors
       }
-      return false;
     },
 
     // Валидация учетной записи
