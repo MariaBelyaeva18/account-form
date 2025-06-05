@@ -71,7 +71,6 @@ export const useMainStore = defineStore('main', {
         if (!Object.values(errors).some(error => error)) {
           this.data[accountIndex] = {
             ...updatedAccount,
-            password: updatedAccount.type === 'LDAP' ? null : updatedAccount.password,
             errors: errors
           };
           this.saveToLocalStorage();

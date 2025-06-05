@@ -19,7 +19,7 @@
         hide-details
         :model-value="localItem.type"
         :error="item.errors.type"
-        @update:modelValue="localItem.type = $event; updateParams('type');"
+        @update:modelValue="updateType($event)"
       />
     </v-col>
       <v-col :cols="localItem.type !== 'LDAP' ? 3 : 6">
@@ -80,5 +80,13 @@ const updateLabels = () => {
 
 const updateParams = (key: string) => {
   mainStore.updateAccount(props.item.id, { [key]: localItem.value[key] })
+}
+
+const updateType = (value: string) => {
+  localItem.value.type = value;
+  if (localItem.value.type === 'LDAP') {
+    localItem.value.password = null;
+  }
+  updateParams('type');
 }
 </script>
