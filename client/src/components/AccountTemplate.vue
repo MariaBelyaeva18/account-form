@@ -6,6 +6,7 @@
         hide-details
         :model-value="localItem.tag"
         :error="item.errors.tag"
+        maxlength="50"
         @input="localItem.tag = $event.target.value"
         @blur="updateLabels()"
       />
@@ -28,6 +29,7 @@
             hide-details
             :model-value="localItem.login"
             :error="item.errors.login"
+            maxlength="100"
             @input="localItem.login = $event.target.value"
             @blur="updateParams('login')"
         />
@@ -41,6 +43,7 @@
             :type="showPassword ? 'text' : 'password'"
             :model-value="localItem.password"
             :error="item.errors.password"
+            maxlength="100"
             @input="localItem.password = $event.target.value"
             @click:append="showPassword = !showPassword"
             @blur="updateParams('password')"
